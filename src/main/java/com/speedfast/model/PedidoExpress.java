@@ -3,7 +3,7 @@ package com.speedfast.model;
 /**
  * Representa un pedido de tipo express.
  */
-public class PedidoExpress extends Pedido {
+public class PedidoExpress extends Pedido implements Rastreable {
 
     public PedidoExpress(String idPedido, String direccionEntrega,
                          double distanciaKm, String tipoEntrega) {
@@ -16,22 +16,29 @@ public class PedidoExpress extends Pedido {
         return getDistanciaKm() > 5 ? 15 : 10;
     }
 
-    /**
-     * Asigna un repartidor al pedido express.
-     */
+    @Override
     public void asignarRepartidor() {
         System.out.println("[Pedido Express]");
-        System.out.println();
         System.out.println("Asignando repartidor...");
-        System.out.println();
         System.out.println("-> Repartidor más cercano con disponibilidad inmediata encontrado.");
     }
 
-    /**
-     * Asigna un repartidor específico.
-     */
+    @Override
     public void asignarRepartidor(String nombreRepartidor) {
-        asignarRepartidor();
-        System.out.println("-> Pedido asignado a " + nombreRepartidor);
+        System.out.println("[Pedido Express]");
+        System.out.println("-> Pedido asignado manualmente a " + nombreRepartidor);
+    }
+
+    @Override
+    public void reservar() {
+        System.out.println("[Pedido Express]");
+        System.out.println("-> Pedido express reservado con prioridad.");
+    }
+
+    @Override
+    public void verHistorial() {
+        System.out.println("[Pedido Express]");
+        System.out.println("-> Historial del pedido consultado.");
+        System.out.println("-> Pedido creado y asignado para entrega express.");
     }
 }

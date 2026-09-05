@@ -4,12 +4,14 @@ package com.speedfast.model;
  * Clase abstracta que representa los datos comunes de cualquier pedido.
  */
 public abstract class Pedido {
+
     private final String idPedido;
     private final String direccionEntrega;
     private final double distanciaKm;
     private final String tipoEntrega;
 
-    public Pedido(String idPedido, String direccionEntrega, double distanciaKm, String tipoEntrega) {
+    public Pedido(String idPedido, String direccionEntrega,
+                  double distanciaKm, String tipoEntrega) {
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
         this.distanciaKm = distanciaKm;
@@ -32,7 +34,7 @@ public abstract class Pedido {
         return tipoEntrega;
     }
 
-    /** Imprime la información común del pedido. */
+    /** Muestra la información común del pedido. */
     public void mostrarResumen() {
         System.out.println("Pedido " + idPedido);
         System.out.println("Dirección: " + direccionEntrega);
@@ -40,6 +42,15 @@ public abstract class Pedido {
         System.out.println("Tipo de entrega: " + tipoEntrega);
     }
 
-    /** Cada subclase define su propia forma de calcular el tiempo. */
+    /** Cada subclase calcula su propio tiempo. */
     public abstract int calcularTiempoEntrega();
+
+    /** Cada subclase define cómo asignar un repartidor. */
+    public abstract void asignarRepartidor();
+
+    /** Cada subclase puede realizar una asignación manual. */
+    public abstract void asignarRepartidor(String nombreRepartidor);
+
+    /** Cada subclase define cómo se reserva el pedido. */
+    public abstract void reservar();
 }
