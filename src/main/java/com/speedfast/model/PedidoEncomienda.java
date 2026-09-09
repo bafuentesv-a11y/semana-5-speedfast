@@ -2,7 +2,7 @@ package com.speedfast.model;
 
 public class PedidoEncomienda extends Pedido implements Cancelable {
 
-    public PedidoEncomienda(String idPedido, String direccionEntrega,
+    public PedidoEncomienda(int idPedido, String direccionEntrega,
                             double distanciaKm, String tipoEntrega) {
         super(idPedido, direccionEntrega, distanciaKm, tipoEntrega);
     }

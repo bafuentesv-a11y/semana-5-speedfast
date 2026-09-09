@@ -1,6 +1,5 @@
 package com.speedfast.model;
 
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -10,15 +9,15 @@ public class Repartidor implements Runnable {
 
     private String nombre;
     private boolean disponible;
-    private List<Pedido> pedidosAsignados;
+    private ZonaDeCarga zonaDeCarga;
 
     /**
      * Constructor de Repartidor.
      */
-    public Repartidor(String nombre, boolean disponible, List<Pedido> pedidosAsignados) {
+    public Repartidor(String nombre, boolean disponible, ZonaDeCarga zonaDeCarga) {
         this.nombre = nombre;
         this.disponible = disponible;
-        this.pedidosAsignados = pedidosAsignados;
+        this.zonaDeCarga = zonaDeCarga;
     }
 
     public String getNombre() {
@@ -33,35 +32,53 @@ public class Repartidor implements Runnable {
         this.disponible = disponible;
     }
 
-    public List<Pedido> getPedidosAsignados() {
-        return pedidosAsignados;
+    public ZonaDeCarga getZonaDeCarga() {
+        return zonaDeCarga;
     }
 
     /**
-     * Ejecuta las entregas de los pedidos asignados.
+     * Ejecuta las entregas de los pedidos retirados
+     * desde la zona de carga compartida.
      */
     @Override
     public void run() {
 
         Random random = new Random();
 
-        for (Pedido pedido : pedidosAsignados) {
+        while (true) {
+
+            Pedido pedido = zonaDeCarga.retirarPedido();
+
+            // Si no quedan pedidos pendientes, el repartidor termina.
+            if (pedido == null) {
+                break;
+            }
+
+            // Cambia el estado del pedido a EN_REPARTO.
+            pedido.setEstado(EstadoPedido.EN_REPARTO);
 
             System.out.println(
-                    "[Repartidor: " + nombre + "] Entregando "
+                    "[Repartidor: " + nombre + "] Retirando "
                             + pedido.getClass().getSimpleName()
-                            + " #" + pedido.getIdPedido() + "..."
+                            + " #" + pedido.getId()
+                            + " - Estado: " + pedido.getEstado()
             );
 
             try {
-                // Simula un tiempo de entrega aleatorio
+
+                // Simula un tiempo de entrega aleatorio.
                 int tiempo = 1000 + random.nextInt(3000);
+
                 Thread.sleep(tiempo);
+
+                // La entrega finaliza correctamente.
+                pedido.setEstado(EstadoPedido.ENTREGADO);
 
                 System.out.println(
                         "[Repartidor: " + nombre + "] Pedido #"
-                                + pedido.getIdPedido()
+                                + pedido.getId()
                                 + " entregado."
+                                + " Estado: " + pedido.getEstado()
                 );
 
             } catch (InterruptedException e) {
@@ -78,12 +95,16 @@ public class Repartidor implements Runnable {
 
         System.out.println(
                 "[Repartidor: " + nombre
-                        + "] Ha terminado todas sus entregas."
+                        + "] Ha terminado sus entregas."
         );
     }
 
+    /**
+     * Representación textual del repartidor.
+     */
     @Override
     public String toString() {
-        return nombre + (disponible ? " (Disponible)" : " (No disponible)");
+        return nombre
+                + (disponible ? " (Disponible)" : " (No disponible)");
     }
 }

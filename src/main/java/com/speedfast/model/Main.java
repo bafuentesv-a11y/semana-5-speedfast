@@ -1,7 +1,5 @@
 package com.speedfast.model;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -10,106 +8,85 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("======================================");
-        System.out.println("       SPEEDFAST - SEMANA 4");
-        System.out.println("   SIMULACIÓN DE ENTREGAS CON HILOS");
+        System.out.println("       SPEEDFAST - SEMANA 5");
+        System.out.println("   SINCRONIZACIÓN DE ENTREGAS");
         System.out.println("======================================\n");
 
-
-        // ==========================================
-        // CREACIÓN DE PEDIDOS
-        // ==========================================
-
+        // Crear pedidos
         Pedido pedidoComida1 = new PedidoComida(
-                "101",
+                101,
                 "Av. Italia 456",
                 4,
                 "Entrega estándar"
         );
 
         Pedido pedidoExpress1 = new PedidoExpress(
-                "102",
+                102,
                 "Av. Apoquindo 1500",
                 7,
                 "Entrega express"
         );
 
         Pedido pedidoEncomienda1 = new PedidoEncomienda(
-                "103",
+                103,
                 "Av. Independencia 123",
                 6,
                 "Entrega estándar"
         );
 
         Pedido pedidoComida2 = new PedidoComida(
-                "104",
+                104,
                 "Av. Providencia 850",
                 3,
                 "Entrega estándar"
         );
 
         Pedido pedidoExpress2 = new PedidoExpress(
-                "105",
+                105,
                 "Av. Las Condes 2500",
                 5,
                 "Entrega express"
         );
 
         Pedido pedidoEncomienda2 = new PedidoEncomienda(
-                "106",
+                106,
                 "Av. Vicuña Mackenna 1200",
                 8,
                 "Entrega estándar"
         );
 
+        // Crear zona de carga compartida
+        ZonaDeCarga zonaDeCarga = new ZonaDeCarga();
 
-        // ==========================================
-        // CREACIÓN DE LISTAS DE PEDIDOS
-        // ==========================================
+        // Agregar pedidos a la zona de carga
+        zonaDeCarga.agregarPedido(pedidoComida1);
+        zonaDeCarga.agregarPedido(pedidoExpress1);
+        zonaDeCarga.agregarPedido(pedidoEncomienda1);
+        zonaDeCarga.agregarPedido(pedidoComida2);
+        zonaDeCarga.agregarPedido(pedidoExpress2);
+        zonaDeCarga.agregarPedido(pedidoEncomienda2);
 
-        List<Pedido> pedidosCamila = Arrays.asList(
-                pedidoComida1,
-                pedidoExpress1
-        );
-
-        List<Pedido> pedidosLuis = Arrays.asList(
-                pedidoEncomienda1,
-                pedidoComida2
-        );
-
-        List<Pedido> pedidosPedro = Arrays.asList(
-                pedidoExpress2,
-                pedidoEncomienda2
-        );
-
-
-        // ==========================================
-        // CREACIÓN DE REPARTIDORES
-        // ==========================================
-
+        // Crear repartidores
         Repartidor camila = new Repartidor(
                 "Camila",
                 true,
-                pedidosCamila
+                zonaDeCarga
         );
 
         Repartidor luis = new Repartidor(
                 "Luis",
                 true,
-                pedidosLuis
+                zonaDeCarga
         );
 
         Repartidor pedro = new Repartidor(
                 "Pedro",
                 true,
-                pedidosPedro
+                zonaDeCarga
         );
 
-
-        // ==========================================
-        // EJECUCIÓN CONCURRENTE
-        // ==========================================
-
-        System.out.println("===== INICIO DE ENTREGAS =====\n");
+        // Crear y ejecutar los hilos
+        System.out.println("\n===== INICIO DE ENTREGAS =====\n");
 
         ExecutorService executor = Executors.newFixedThreadPool(3);
 
@@ -119,37 +96,27 @@ public class Main {
 
         executor.shutdown();
 
-
-        // ==========================================
-        // ESPERA A QUE TERMINEN LOS REPARTIDORES
-        // ==========================================
-
+        // Esperar a que todos los repartidores terminen
         while (!executor.isTerminated()) {
-
             try {
                 Thread.sleep(500);
-
             } catch (InterruptedException e) {
-
                 System.out.println(
                         "La espera de las entregas fue interrumpida."
                 );
-
                 Thread.currentThread().interrupt();
                 break;
             }
         }
 
+        // Mensaje final
+        System.out.println(
+                "\n===== TODOS LOS PEDIDOS HAN SIDO ENTREGADOS ====="
+        );
 
-        // ==========================================
-        // FINALIZACIÓN
-        // ==========================================
-
-        System.out.println("\n===== TODAS LAS ENTREGAS HAN TERMINADO =====");
-
-        System.out.println("Camila: " + camila);
-        System.out.println("Luis: " + luis);
-        System.out.println("Pedro: " + pedro);
+        System.out.println(
+                "Todos los pedidos han sido entregados correctamente"
+        );
 
         System.out.println("\n======================================");
         System.out.println("       FIN DE LA SIMULACIÓN");

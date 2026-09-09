@@ -12,105 +12,161 @@ public class ControladorDeEnvios
     private final List<Pedido> pedidos;
     private final List<String> historial;
 
+    /**
+     * Constructor del controlador.
+     */
     public ControladorDeEnvios() {
         pedidos = new ArrayList<>();
         historial = new ArrayList<>();
     }
 
+    /**
+     * Agrega un pedido al sistema.
+     */
     public void agregarPedido(Pedido pedido) {
+
         pedidos.add(pedido);
 
-        System.out.println("Pedido " + pedido.getIdPedido()
-                + " agregado al sistema.");
+        System.out.println(
+                "Pedido " + pedido.getId()
+                        + " agregado al sistema."
+        );
     }
 
+    /**
+     * Muestra todos los pedidos registrados.
+     */
     public void mostrarPedidos() {
+
         System.out.println("\n===== PEDIDOS REGISTRADOS =====");
 
         for (Pedido pedido : pedidos) {
+
             pedido.mostrarResumen();
 
-            System.out.println("Tiempo estimado: "
-                    + pedido.calcularTiempoEntrega()
-                    + " minutos");
+            System.out.println(
+                    "Tiempo estimado: "
+                            + pedido.calcularTiempoEntrega()
+                            + " minutos"
+            );
 
             System.out.println("------------------------------");
         }
     }
 
+    /**
+     * Reserva todos los pedidos registrados.
+     */
     public void reservarPedidos() {
+
         System.out.println("\n===== RESERVA DE PEDIDOS =====");
 
         for (Pedido pedido : pedidos) {
+
             pedido.reservar();
 
-            historial.add("Pedido "
-                    + pedido.getIdPedido()
-                    + " - Reservado");
+            historial.add(
+                    "Pedido "
+                            + pedido.getId()
+                            + " - Reservado"
+            );
         }
     }
 
+    /**
+     * Registra el despacho de los pedidos.
+     */
     @Override
     public void despachar() {
+
         System.out.println("\n===== DESPACHO =====");
 
         for (Pedido pedido : pedidos) {
 
-            System.out.println("Pedido "
-                    + pedido.getIdPedido()
-                    + " despachado correctamente.");
+            System.out.println(
+                    "Pedido "
+                            + pedido.getId()
+                            + " despachado correctamente."
+            );
 
-            historial.add("Pedido "
-                    + pedido.getIdPedido()
-                    + " - Despachado");
+            historial.add(
+                    "Pedido "
+                            + pedido.getId()
+                            + " - Despachado"
+            );
         }
     }
 
+    /**
+     * Cancela el último pedido registrado.
+     */
     @Override
     public void cancelar() {
+
         System.out.println("\n===== CANCELACIÓN =====");
 
-        if (!pedidos.isEmpty()) {
-
-            Pedido pedido = pedidos.get(pedidos.size() - 1);
-
-            System.out.println("Pedido "
-                    + pedido.getIdPedido()
-                    + " cancelado correctamente.");
-
-            historial.add("Pedido "
-                    + pedido.getIdPedido()
-                    + " - Cancelado");
+        if (pedidos.isEmpty()) {
+            System.out.println("No existen pedidos para cancelar.");
+            return;
         }
+
+        Pedido pedido = pedidos.get(pedidos.size() - 1);
+
+        System.out.println(
+                "Pedido "
+                        + pedido.getId()
+                        + " cancelado correctamente."
+        );
+
+        historial.add(
+                "Pedido "
+                        + pedido.getId()
+                        + " - Cancelado"
+        );
     }
 
-    public void cancelar(String idPedido) {
+    /**
+     * Cancela un pedido utilizando su identificador.
+     */
+    public void cancelar(int idPedido) {
 
         for (Pedido pedido : pedidos) {
 
-            if (pedido.getIdPedido().equals(idPedido)) {
+            if (pedido.getId() == idPedido) {
 
-                System.out.println("Pedido "
-                        + pedido.getIdPedido()
-                        + " cancelado correctamente.");
+                System.out.println(
+                        "Pedido "
+                                + pedido.getId()
+                                + " cancelado correctamente."
+                );
 
-                historial.add("Pedido "
-                        + pedido.getIdPedido()
-                        + " - Cancelado");
+                historial.add(
+                        "Pedido "
+                                + pedido.getId()
+                                + " - Cancelado"
+                );
 
                 return;
             }
         }
 
-        System.out.println("No se encontró el pedido " + idPedido);
+        System.out.println(
+                "No se encontró el pedido " + idPedido
+        );
     }
 
+    /**
+     * Muestra el historial de operaciones.
+     */
     @Override
     public void verHistorial() {
+
         System.out.println("\n===== HISTORIAL =====");
 
         if (historial.isEmpty()) {
-            System.out.println("No existen operaciones registradas.");
+            System.out.println(
+                    "No existen operaciones registradas."
+            );
             return;
         }
 

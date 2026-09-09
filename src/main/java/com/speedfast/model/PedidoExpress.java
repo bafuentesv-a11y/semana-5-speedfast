@@ -5,7 +5,7 @@ package com.speedfast.model;
  */
 public class PedidoExpress extends Pedido implements Rastreable {
 
-    public PedidoExpress(String idPedido, String direccionEntrega,
+    public PedidoExpress(int idPedido, String direccionEntrega,
                          double distanciaKm, String tipoEntrega) {
 
         super(idPedido, direccionEntrega, distanciaKm, tipoEntrega);

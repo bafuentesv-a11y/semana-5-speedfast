@@ -5,21 +5,31 @@ package com.speedfast.model;
  */
 public abstract class Pedido {
 
-    private final String idPedido;
-    private final String direccionEntrega;
-    private final double distanciaKm;
-    private final String tipoEntrega;
+    private int id;
+    private String direccionEntrega;
+    private double distanciaKm;
+    private String tipoEntrega;
+    private EstadoPedido estado;
 
-    public Pedido(String idPedido, String direccionEntrega,
+    /**
+     * Constructor de Pedido.
+     */
+    public Pedido(int id, String direccionEntrega,
                   double distanciaKm, String tipoEntrega) {
-        this.idPedido = idPedido;
+
+        this.id = id;
         this.direccionEntrega = direccionEntrega;
         this.distanciaKm = distanciaKm;
         this.tipoEntrega = tipoEntrega;
+        this.estado = EstadoPedido.PENDIENTE;
     }
 
-    public String getIdPedido() {
-        return idPedido;
+    // ==============================
+    // GETTERS
+    // ==============================
+
+    public int getId() {
+        return id;
     }
 
     public String getDireccionEntrega() {
@@ -34,23 +44,94 @@ public abstract class Pedido {
         return tipoEntrega;
     }
 
-    /** Muestra la información común del pedido. */
+    public EstadoPedido getEstado() {
+        return estado;
+    }
+
+    // ==============================
+    // SETTERS
+    // ==============================
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDireccionEntrega(String direccionEntrega) {
+        this.direccionEntrega = direccionEntrega;
+    }
+
+    public void setDistanciaKm(double distanciaKm) {
+        this.distanciaKm = distanciaKm;
+    }
+
+    public void setTipoEntrega(String tipoEntrega) {
+        this.tipoEntrega = tipoEntrega;
+    }
+
+    public void setEstado(EstadoPedido estado) {
+        this.estado = estado;
+    }
+
+    /**
+     * Actualiza el estado utilizando el nombre del estado.
+     */
+    public void setEstado(String nuevoEstado) {
+        this.estado = EstadoPedido.valueOf(nuevoEstado);
+    }
+
+    // ==============================
+    // MÉTODOS COMUNES
+    // ==============================
+
+    /**
+     * Muestra la información del pedido.
+     */
     public void mostrarResumen() {
-        System.out.println("Pedido " + idPedido);
+
+        System.out.println("Pedido #" + id);
         System.out.println("Dirección: " + direccionEntrega);
         System.out.printf("Distancia: %.1f km%n", distanciaKm);
         System.out.println("Tipo de entrega: " + tipoEntrega);
+        System.out.println("Estado: " + estado);
     }
 
-    /** Cada subclase calcula su propio tiempo. */
+    // ==============================
+    // MÉTODOS ABSTRACTOS
+    // ==============================
+
+    /**
+     * Cada subclase calcula su propio tiempo de entrega.
+     */
     public abstract int calcularTiempoEntrega();
 
-    /** Cada subclase define cómo asignar un repartidor. */
+    /**
+     * Cada subclase define cómo asignar un repartidor.
+     */
     public abstract void asignarRepartidor();
 
-    /** Cada subclase puede realizar una asignación manual. */
+    /**
+     * Permite realizar una asignación manual.
+     */
     public abstract void asignarRepartidor(String nombreRepartidor);
 
-    /** Cada subclase define cómo se reserva el pedido. */
+    /**
+     * Cada subclase define cómo se reserva el pedido.
+     */
     public abstract void reservar();
+
+    // ==============================
+    // TOSTRING
+    // ==============================
+
+    @Override
+    public String toString() {
+
+        return "Pedido{" +
+                "id=" + id +
+                ", direccionEntrega='" + direccionEntrega + '\'' +
+                ", distanciaKm=" + distanciaKm +
+                ", tipoEntrega='" + tipoEntrega + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

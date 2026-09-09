@@ -2,7 +2,7 @@ package com.speedfast.model;
 
 public class PedidoComida extends Pedido implements Despachable {
 
-    public PedidoComida(String idPedido, String direccionEntrega,
+    public PedidoComida(int idPedido, String direccionEntrega,
                         double distanciaKm, String tipoEntrega) {
         super(idPedido, direccionEntrega, distanciaKm, tipoEntrega);
     }
